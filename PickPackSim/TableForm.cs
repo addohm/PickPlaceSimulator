@@ -1,58 +1,58 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace PickPackSim
 {
-    internal static class Program
+    public partial class TableForm : Form
     {
-
-        /// <summary>
-        /// Gets the connection string
-        /// </summary>
-        public static string ConnStr
+        public TableForm()
         {
-            get
+            InitializeComponent();
+        }
+        public List<string> FormData = new List<string>();
+        private object result;
+        private int quantity = -1;
+        public List<string> SerialList { get; set; }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            dbReset();
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            const string message =
+                "Are you sure that you would like to close the form?";
+            const string caption = "Form Closing";
+            var result = MessageBox.Show(message, caption,
+                                         MessageBoxButtons.YesNo,
+                                         MessageBoxIcon.Question);
+
+            // If the no button was pressed ...
+            if (result == DialogResult.No)
             {
-                Properties.Settings.Default.ConnStr = $"Data Source={ Properties.Settings.Default.sqlServer}" +
-                    $";Initial Catalog={ Properties.Settings.Default.sqlDBName}" +
-                    $";user id={ Properties.Settings.Default.sqlUsername}" +
-                    $";password={ Properties.Settings.Default.sqlPassword}";
-                Properties.Settings.Default.ConnStr.Replace(" ", "");
-                Properties.Settings.Default.Save();
-                return Properties.Settings.Default.ConnStr;
+                // cancel the closure of the form.
+                e.Cancel = true;
             }
         }
 
-        /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
-        [STAThread]
-        private static void Main()
+        public void BtnClose_Click(object sender, EventArgs e)
         {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            // Application.Run(new Simulate());
-            Simulation sim = new Simulation();
-            Application.Run(sim);
-            sim.Simulate();
-            sim = null;
+            dbReset();
+            Close();
         }
-    }
 
-    public partial class Simulation : TableForm
-    {
-        public List<string> FormData;
-        private object result;
-        private int quantity = -1;
-
-        /// <summary>
-        /// Runs the simulation
-        /// </summary>
-        public void Simulate()
+        public void BtnRun_Click(object sender, EventArgs e)
         {
+
             int inserted = 0;
             // object[,,,] results;
             string serial = string.Empty;
@@ -77,13 +77,13 @@ namespace PickPackSim
                 cmd = new SqlCommand();
                 cmd = conn.CreateCommand();
                 int quantity = PackedQuantity(Program.ConnStr);
-                        
+
                 cmd.CommandType = CommandType.Text;
                 cmd.CommandText = "select count(serial_number) from aof_optic_inserted";
                 result = cmd.ExecuteScalar();
                 result = (result == DBNull.Value) ? null : result;
                 inserted = (int)result;
-                if (inserted > rnd.Next(1, 5))
+                if (inserted > rnd.Next(1, 6))
                 {
                     // Theres enough optics in the boards, create and process results
                     cmd.CommandText = @"select top 1 i.serial_number
@@ -122,7 +122,7 @@ namespace PickPackSim
                                                     join aof_order_optics oo
                                                         on r.serial_number = oo.serial_number
                                             where oo.packed = 0
-                                            order by oo.so_line_number, 
+                                            order by abs(oo.so_line_number), 
                                                         newid()";
                     result = cmd.ExecuteScalar();
                     result = (result == DBNull.Value) ? null : result;
@@ -162,22 +162,19 @@ namespace PickPackSim
                         param = new SqlParameter("@lineNo", SqlDbType.VarChar, 50);
                         param.Direction = ParameterDirection.Output;
                         cmd.Parameters.Add(param);
-                        cmd.ExecuteNonQuery();
+                        cmd.ExecuteScalar();
 
-                        this.FormSerialNumber = (string)cmd.Parameters["@serial"].Value;
-                        this.FormLineNumber = (string)cmd.Parameters["@lineNo"].Value;
-                        this.FormOpticPosition = (string)cmd.Parameters["@casePackPosition"].Value;
-                        this.FormClamshellPosition = (string)cmd.Parameters["@opticPackPosition"].Value;
+                        //FormData.Add(cmd.Parameters["@serial"].Value.ToString());
+                        //FormData.Add(cmd.Parameters["@lineNo"].Value.ToString());
+                        //FormData.Add(cmd.Parameters["@casePackPosition"].Value.ToString());
+                        //FormData.Add(cmd.Parameters["@opticPackPosition"].Value.ToString());
 
-                        FormData.Add((string)cmd.Parameters["@serial"].Value);
-                        FormData.Add((string)cmd.Parameters["@lineNo"].Value);
-                        FormData.Add((string)cmd.Parameters["@casePackPosition"].Value);
-                        FormData.Add((string)cmd.Parameters["@opticPackPosition"].Value);
+                        lbResults.Items.Add(cmd.Parameters["@serial"].Value.ToString());
+                        lbResults.Items.Add(cmd.Parameters["@lineNo"].Value.ToString());
+                        lbResults.Items.Add(cmd.Parameters["@casePackPosition"].Value.ToString());
+                        lbResults.Items.Add(cmd.Parameters["@opticPackPosition"].Value.ToString());
 
-                        this.lbResults.Items.Add((string)cmd.Parameters["@serial"].Value);
-                        this.lbResults.Items.Add((string)cmd.Parameters["@lineNo"].Value);
-                        this.lbResults.Items.Add((string)cmd.Parameters["@casePackPosition"].Value);
-                        this.lbResults.Items.Add((string)cmd.Parameters["@opticPackPosition"].Value);
+
                     }
                 }
                 else
@@ -231,6 +228,24 @@ namespace PickPackSim
             conn = null;
         }
 
+        public void BtnReset_Click(object sender, EventArgs e)
+        {
+            dbReset();
+        }
+
+        private void dbReset()
+        {
+            using (SqlConnection conn = new SqlConnection(Program.ConnStr))
+            {
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    conn.Open();
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.CommandText = "rt_sp_testAOFreset";
+                    result = cmd.ExecuteNonQuery();
+                }
+            }
+        }
         /// <summary>
         /// Gets the list of serials from AOF_ORDER_OPTICS
         /// </summary>
@@ -272,5 +287,6 @@ namespace PickPackSim
                 }
             }
         }
+
     }
 }
