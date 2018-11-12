@@ -1,5 +1,5 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Integra_PickPackSim.Properties" GeneratedClassName="Settings">
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="PickPackSim.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
     <Setting Name="ConnStr" Type="System.String" Scope="User">
@@ -12,10 +12,10 @@
       <Value Profile="(Default)">ROBOTICS_OPTICS</Value>
     </Setting>
     <Setting Name="sqlUsername" Type="System.String" Scope="User">
-      <Value Profile="(Default)">robotuser</Value>
+      <Value Profile="(Default)">testuser</Value>
     </Setting>
     <Setting Name="sqlPassword" Type="System.String" Scope="User">
-      <Value Profile="(Default)">R0b0tik0verlordz</Value>
+      <Value Profile="(Default)">testpassword</Value>
     </Setting>
   </Settings>
 </SettingsFile>

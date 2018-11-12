@@ -61,7 +61,7 @@ namespace PickPackSim.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("robotuser")]
+        [global::System.Configuration.DefaultSettingValueAttribute("testuser")]
         public string sqlUsername {
             get {
                 return ((string)(this["sqlUsername"]));
@@ -73,7 +73,7 @@ namespace PickPackSim.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("R0b0tik0verlordz")]
+        [global::System.Configuration.DefaultSettingValueAttribute("testpassword")]
         public string sqlPassword {
             get {
                 return ((string)(this["sqlPassword"]));
