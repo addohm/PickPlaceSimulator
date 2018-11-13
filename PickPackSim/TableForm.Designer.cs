@@ -30,37 +30,31 @@ namespace PickPackSim
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.ListViewGroup listViewGroup5 = new System.Windows.Forms.ListViewGroup("Serial Number", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup6 = new System.Windows.Forms.ListViewGroup("Line Number", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup7 = new System.Windows.Forms.ListViewGroup("Optic Position", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup8 = new System.Windows.Forms.ListViewGroup("Clamshell Position", System.Windows.Forms.HorizontalAlignment.Left);
-            this.lbResults = new System.Windows.Forms.ListBox();
+            System.Windows.Forms.ListViewGroup listViewGroup1 = new System.Windows.Forms.ListViewGroup("Serial Number", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup2 = new System.Windows.Forms.ListViewGroup("Line Number", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup3 = new System.Windows.Forms.ListViewGroup("Optic Position", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup4 = new System.Windows.Forms.ListViewGroup("Clamshell Position", System.Windows.Forms.HorizontalAlignment.Left);
             this.BtnClose = new System.Windows.Forms.Button();
             this.BtnRun = new System.Windows.Forms.Button();
             this.BtnReset = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
             this.lvResults = new System.Windows.Forms.ListView();
             this.lvCol1Header = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.lvCol2Header = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.lvCol3Header = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.lvCol4Header = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.label6 = new System.Windows.Forms.Label();
+            this.lblRemaining = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.lblInserted = new System.Windows.Forms.Label();
+            this.lblResults = new System.Windows.Forms.Label();
+            this.SpCaller = new System.ComponentModel.BackgroundWorker();
+            this.progress = new System.Windows.Forms.ProgressBar();
             this.SuspendLayout();
-            // 
-            // lbResults
-            // 
-            this.lbResults.FormattingEnabled = true;
-            this.lbResults.Location = new System.Drawing.Point(12, 25);
-            this.lbResults.Name = "lbResults";
-            this.lbResults.ScrollAlwaysVisible = true;
-            this.lbResults.Size = new System.Drawing.Size(362, 173);
-            this.lbResults.TabIndex = 0;
             // 
             // BtnClose
             // 
-            this.BtnClose.Location = new System.Drawing.Point(299, 460);
+            this.BtnClose.Location = new System.Drawing.Point(299, 400);
             this.BtnClose.Name = "BtnClose";
             this.BtnClose.Size = new System.Drawing.Size(75, 23);
             this.BtnClose.TabIndex = 1;
@@ -70,7 +64,7 @@ namespace PickPackSim
             // 
             // BtnRun
             // 
-            this.BtnRun.Location = new System.Drawing.Point(218, 460);
+            this.BtnRun.Location = new System.Drawing.Point(218, 400);
             this.BtnRun.Name = "BtnRun";
             this.BtnRun.Size = new System.Drawing.Size(75, 23);
             this.BtnRun.TabIndex = 2;
@@ -80,49 +74,13 @@ namespace PickPackSim
             // 
             // BtnReset
             // 
-            this.BtnReset.Location = new System.Drawing.Point(12, 460);
+            this.BtnReset.Location = new System.Drawing.Point(12, 400);
             this.BtnReset.Name = "BtnReset";
             this.BtnReset.Size = new System.Drawing.Size(75, 23);
             this.BtnReset.TabIndex = 3;
             this.BtnReset.Text = "Reset";
             this.BtnReset.UseVisualStyleBackColor = true;
             this.BtnReset.Click += new System.EventHandler(this.BtnReset_Click);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(16, 6);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(73, 13);
-            this.label1.TabIndex = 4;
-            this.label1.Text = "Serial Number";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(104, 6);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(67, 13);
-            this.label2.TabIndex = 5;
-            this.label2.Text = "Line Number";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(177, 6);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(72, 13);
-            this.label3.TabIndex = 6;
-            this.label3.Text = "Optic Position";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(255, 6);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(91, 13);
-            this.label4.TabIndex = 7;
-            this.label4.Text = "Clamshell Position";
             // 
             // lvResults
             // 
@@ -132,61 +90,137 @@ namespace PickPackSim
             this.lvCol3Header,
             this.lvCol4Header});
             this.lvResults.GridLines = true;
-            listViewGroup5.Header = "Serial Number";
-            listViewGroup5.Name = "listViewGroup1";
-            listViewGroup6.Header = "Line Number";
-            listViewGroup6.Name = "listViewGroup2";
-            listViewGroup7.Header = "Optic Position";
-            listViewGroup7.Name = "listViewGroup3";
-            listViewGroup8.Header = "Clamshell Position";
-            listViewGroup8.Name = "listViewGroup4";
+            listViewGroup1.Header = "Serial Number";
+            listViewGroup1.Name = "listViewGroup1";
+            listViewGroup2.Header = "Line Number";
+            listViewGroup2.Name = "listViewGroup2";
+            listViewGroup3.Header = "Optic Position";
+            listViewGroup3.Name = "listViewGroup3";
+            listViewGroup4.Header = "Clamshell Position";
+            listViewGroup4.Name = "listViewGroup4";
             this.lvResults.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] {
-            listViewGroup5,
-            listViewGroup6,
-            listViewGroup7,
-            listViewGroup8});
+            listViewGroup1,
+            listViewGroup2,
+            listViewGroup3,
+            listViewGroup4});
             this.lvResults.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
-            this.lvResults.Location = new System.Drawing.Point(12, 205);
+            this.lvResults.Location = new System.Drawing.Point(12, 121);
             this.lvResults.Name = "lvResults";
-            this.lvResults.Size = new System.Drawing.Size(362, 249);
+            this.lvResults.Size = new System.Drawing.Size(362, 273);
             this.lvResults.TabIndex = 8;
             this.lvResults.UseCompatibleStateImageBehavior = false;
-            this.lvResults.View = System.Windows.Forms.View.List;
+            this.lvResults.View = System.Windows.Forms.View.Details;
             // 
             // lvCol1Header
             // 
             this.lvCol1Header.Text = "Serial Numbers";
+            this.lvCol1Header.Width = 105;
             // 
             // lvCol2Header
             // 
             this.lvCol2Header.Text = "Line Number";
             this.lvCol2Header.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.lvCol2Header.Width = 76;
             // 
             // lvCol3Header
             // 
             this.lvCol3Header.Text = "Optic Position";
             this.lvCol3Header.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.lvCol3Header.Width = 79;
             // 
             // lvCol4Header
             // 
             this.lvCol4Header.Text = "Clamshell Position";
             this.lvCol4Header.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.lvCol4Header.Width = 98;
             // 
-            // Form1
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(88, 27);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(93, 13);
+            this.label6.TabIndex = 10;
+            this.label6.Text = "Optics Remaining:";
+            // 
+            // lblRemaining
+            // 
+            this.lblRemaining.AutoSize = true;
+            this.lblRemaining.Font = new System.Drawing.Font("Microsoft Sans Serif", 36F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblRemaining.Location = new System.Drawing.Point(187, 8);
+            this.lblRemaining.Name = "lblRemaining";
+            this.lblRemaining.Size = new System.Drawing.Size(136, 55);
+            this.lblRemaining.TabIndex = 11;
+            this.lblRemaining.Text = "####";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(26, 80);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(81, 13);
+            this.label5.TabIndex = 12;
+            this.label5.Text = "Optics Inserted:";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(194, 80);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(86, 13);
+            this.label7.TabIndex = 13;
+            this.label7.Text = "Results Inserted:";
+            // 
+            // lblInserted
+            // 
+            this.lblInserted.AutoSize = true;
+            this.lblInserted.Font = new System.Drawing.Font("Microsoft Sans Serif", 36F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblInserted.Location = new System.Drawing.Point(113, 63);
+            this.lblInserted.Name = "lblInserted";
+            this.lblInserted.Size = new System.Drawing.Size(52, 55);
+            this.lblInserted.TabIndex = 14;
+            this.lblInserted.Text = "#";
+            // 
+            // lblResults
+            // 
+            this.lblResults.AutoSize = true;
+            this.lblResults.Font = new System.Drawing.Font("Microsoft Sans Serif", 36F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblResults.Location = new System.Drawing.Point(286, 63);
+            this.lblResults.Name = "lblResults";
+            this.lblResults.Size = new System.Drawing.Size(52, 55);
+            this.lblResults.TabIndex = 15;
+            this.lblResults.Text = "#";
+            // 
+            // SpCaller
+            // 
+            this.SpCaller.WorkerReportsProgress = true;
+            // 
+            // progress
+            // 
+            this.progress.Location = new System.Drawing.Point(29, 257);
+            this.progress.Name = "progress";
+            this.progress.Size = new System.Drawing.Size(327, 23);
+            this.progress.Step = 25;
+            this.progress.TabIndex = 16;
+            this.progress.Visible = false;
+            // 
+            // TableForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(386, 495);
+            this.ClientSize = new System.Drawing.Size(386, 435);
+            this.Controls.Add(this.progress);
+            this.Controls.Add(this.lblResults);
+            this.Controls.Add(this.lblInserted);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.lblRemaining);
+            this.Controls.Add(this.label6);
             this.Controls.Add(this.lvResults);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
             this.Controls.Add(this.BtnReset);
             this.Controls.Add(this.BtnRun);
             this.Controls.Add(this.BtnClose);
-            this.Controls.Add(this.lbResults);
-            this.Name = "Form1";
+            this.Name = "TableForm";
             this.Text = "Pick and Pack Simulation";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
@@ -199,16 +233,19 @@ namespace PickPackSim
         private System.Windows.Forms.Button BtnClose;
         private System.Windows.Forms.Button BtnRun;
         private System.Windows.Forms.Button BtnReset;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label4;
         private System.Windows.Forms.ListView lvResults;
         private System.Windows.Forms.ColumnHeader lvCol1Header;
         private System.Windows.Forms.ColumnHeader lvCol2Header;
         private System.Windows.Forms.ColumnHeader lvCol3Header;
         private System.Windows.Forms.ColumnHeader lvCol4Header;
-        public System.Windows.Forms.ListBox lbResults;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label lblRemaining;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label lblInserted;
+        private System.Windows.Forms.Label lblResults;
+        private System.ComponentModel.BackgroundWorker SpCaller;
+        private System.Windows.Forms.ProgressBar progress;
     }
 }
 
