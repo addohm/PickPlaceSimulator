@@ -62,6 +62,7 @@ namespace PickPackSim
         {
 
             dbReset();
+            UpdateValues();
             // progress.Visible = true;
             // BtnReset.Enabled = false;
             // BtnReset.Text = "0 Percent Complete";
@@ -114,7 +115,6 @@ namespace PickPackSim
         {
             int inserted = 0;
             int results = 0;
-            // object[,,,] results;
             string serial = string.Empty;
             string board = string.Empty;
             // Create a list of serials from the database
@@ -137,13 +137,18 @@ namespace PickPackSim
                 {
                     // Theres enough optics in the boards, create and process results
                     // First, select a serial to be picked from the boards
-                    serial = SelectSerialToPick(Program.ConnStr);
+                    serial = SelectSerialResult(Program.ConnStr);
                     // And select a board to insert the serial into
                     board = SelectBoardResult(Program.ConnStr);
                     // Then insert the serial into the board
                     InsertResult(Program.ConnStr, serial, board);
                     // Now select a serial to pack
+
                     serial = SelectSerialToPack(Program.ConnStr);
+                    /*
+                     * Need to convert the above to use the ResultsCheck sproc
+                     */
+
                     // Check to see if the object is contained within the rejected serials list
                     if (RejectList( Program.ConnStr, rejects, serial) != true)
                     {
@@ -151,7 +156,6 @@ namespace PickPackSim
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.CommandText = "rt_sp_aof_packOptic";
                         cmd.Parameters.AddWithValue("@serial", serial);
-                        //cmd.Parameters.Add("@serial", SqlDbType.VarChar, 50).Value = serial;
                         param = new SqlParameter("@packStatus", SqlDbType.Bit);
                         param.Direction = ParameterDirection.Output;
                         cmd.Parameters.Add(param);
@@ -174,11 +178,6 @@ namespace PickPackSim
                         param.Direction = ParameterDirection.Output;
                         cmd.Parameters.Add(param);
                         cmd.ExecuteNonQuery();
-
-                        lvResults.Columns.Add("Serial Number", -2, HorizontalAlignment.Left);
-                        lvResults.Columns.Add("Order Line Number", -2, HorizontalAlignment.Left);
-                        lvResults.Columns.Add("Optic Position", -2, HorizontalAlignment.Center);
-                        lvResults.Columns.Add("Case Position", -2, HorizontalAlignment.Center);
 
                         ListViewItem item = new ListViewItem(cmd.Parameters["@serial"].Value.ToString());
                         item.SubItems.Add(cmd.Parameters["@lineNo"].Value.ToString());
@@ -364,7 +363,7 @@ namespace PickPackSim
         /// </summary>
         /// <param name="connStr"></param>
         /// <returns></returns>
-        public string SelectSerialToPick(string connStr)
+        public string SelectSerialResult(string connStr)
         {
             using (SqlConnection conn = new SqlConnection(Program.ConnStr))
             {
